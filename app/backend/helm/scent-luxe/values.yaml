@@ -1,0 +1,24 @@
+# Global settings
+replicaCount: 1
+
+backend:
+  image:
+    repository: your-dockerhub-username/scent-luxe-backend
+    tag: "v1"
+  service:
+    port: 8081
+
+frontend:
+  image:
+    repository: docksaif/scent-luxe-frontend
+    tag: "v1"
+  service:
+    port: 80
+
+database:
+  password: "password"
+  storageSize: "1Gi"
+
+ingress:
+  enabled: true
+  host: "scentluxe.local"
