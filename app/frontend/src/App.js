@@ -1,51 +1,68 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
 function App() {
   const [perfumes, setPerfumes] = useState([]);
-  const [cart, setCart] = useState([]);
+  const API_URL = process.env.REACT_APP_API_URL || "/api/perfumes";
 
-  // Load perfumes from Backend API
   useEffect(() => {
-    // In Production, this URL will come from an Environment Variable
-    const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8081/api/perfumes";
-    axios.get(API_URL)
-      .then(response => setPerfumes(response.data))
-      .catch(error => console.error("Error fetching data:", error));
-  }, []);
-
-  const addToCart = (perfume) => {
-    setCart([...cart, perfume]);
-    alert(`Added ${perfume.name} to Cart!`);
-  };
+    fetch(API_URL)
+      .then(response => response.json())
+      .then(data => setPerfumes(data))
+      .catch(err => console.error("Error loading products:", err));
+  }, [API_URL]);
 
   return (
-    <div className="container mt-5">
-      <h1 className="text-center mb-4">✨ Scent-Luxe Store</h1>
-      <div className="text-end mb-3">
-        <button className="btn btn-dark">🛒 Cart ({cart.length})</button>
-      </div>
+    <div className="app-container">
+      {/* Navigation Bar */}
+      <nav className="navbar">
+        <div className="logo">SCENT<span className="gold">LUXE</span></div>
+        <div className="nav-links">
+          <a href="#home">Collections</a>
+          <a href="#about">Our Story</a>
+          <a href="#contact">Contact</a>
+          <button className="cart-btn">Cart (0)</button>
+        </div>
+      </nav>
 
-      <div className="row">
-        {perfumes.map(perfume => (
-          <div className="col-md-4 mb-4" key={perfume.id}>
-            <div className="card h-100 shadow-sm">
-              <div className="card-body">
-                <h5 className="card-title">{perfume.name}</h5>
-                <h6 className="card-subtitle mb-2 text-muted">{perfume.brand}</h6>
-                <p className="card-text">Notes: {perfume.scentNotes}</p>
-                <div className="d-flex justify-content-between align-items-center">
-                  <span className="h5">${perfume.price}</span>
-                  <button onClick={() => addToCart(perfume)} className="btn btn-outline-dark">
-                    Add to Cart
-                  </button>
+      {/* Hero Section */}
+      <header className="hero">
+        <div className="hero-content">
+          <h1>Find Your Signature Scent</h1>
+          <p>Experience the essence of luxury with our exclusive collection.</p>
+          <button className="shop-now-btn">Shop Collection</button>
+        </div>
+      </header>
+
+      {/* Product Grid */}
+      <section className="products-section">
+        <h2>Exclusive Arrivals</h2>
+        <div className="product-grid">
+          {perfumes.length === 0 ? (
+            <p className="loading">Loading Exquisite Scents...</p>
+          ) : (
+            perfumes.map((perfume) => (
+              <div key={perfume.id} className="product-card">
+                <div className="image-placeholder"></div>
+                <div className="card-details">
+                  <span className="brand">{perfume.brand}</span>
+                  <h3>{perfume.name}</h3>
+                  <p className="description">{perfume.description}</p>
+                  <div className="price-row">
+                    <span className="price">${perfume.price}</span>
+                    <button className="add-btn">Add to Bag</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            ))
+          )}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer>
+        <p>&copy; 2026 ScentLuxe. Redefining Elegance.</p>
+      </footer>
     </div>
   );
 }
