@@ -3,7 +3,7 @@ replicaCount: 1
 
 backend:
   image:
-    repository: your-dockerhub-username/scent-luxe-backend
+    repository: docksaif/scent-luxe-backend
     tag: "v1"
   service:
     port: 8081
