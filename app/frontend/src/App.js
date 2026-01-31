@@ -1,16 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [perfumes, setPerfumes] = useState([]);
-  const API_URL = process.env.REACT_APP_API_URL || "/api/perfumes";
-
-  useEffect(() => {
-    fetch(API_URL)
-      .then(response => response.json())
-      .then(data => setPerfumes(data))
-      .catch(err => console.error("Error loading products:", err));
-  }, [API_URL]);
+  // MANUAL DATA: Guaranteed to display immediately
+  const [perfumes] = useState([
+    {
+      id: 1,
+      name: "Sauvage Elixir",
+      brand: "DIOR",
+      price: 160.00,
+      description: "A concentrated fragrance steeped in the emblematic freshness of Sauvage."
+    },
+    {
+      id: 2,
+      name: "Bleu de Chanel",
+      brand: "CHANEL",
+      price: 145.00,
+      description: "A woody, aromatic fragrance for the man who defies convention."
+    },
+    {
+      id: 3,
+      name: "Aventus",
+      brand: "CREED",
+      price: 365.00,
+      description: "The exceptional Aventus was inspired by the dramatic life of a historic emperor."
+    },
+    {
+      id: 4,
+      name: "Black Orchid",
+      brand: "TOM FORD",
+      price: 195.00,
+      description: "A luxurious and sensual fragrance of rich, dark accords and black orchids."
+    }
+  ]);
 
   return (
     <div className="app-container">
@@ -20,7 +42,6 @@ function App() {
         <div className="nav-links">
           <a href="#home">Collections</a>
           <a href="#about">Our Story</a>
-          <a href="#contact">Contact</a>
           <button className="cart-btn">Cart (0)</button>
         </div>
       </nav>
@@ -38,10 +59,7 @@ function App() {
       <section className="products-section">
         <h2>Exclusive Arrivals</h2>
         <div className="product-grid">
-          {perfumes.length === 0 ? (
-            <p className="loading">Loading Exquisite Scents...</p>
-          ) : (
-            perfumes.map((perfume) => (
+            {perfumes.map((perfume) => (
               <div key={perfume.id} className="product-card">
                 <div className="image-placeholder"></div>
                 <div className="card-details">
@@ -54,8 +72,7 @@ function App() {
                   </div>
                 </div>
               </div>
-            ))
-          )}
+            ))}
         </div>
       </section>
 
