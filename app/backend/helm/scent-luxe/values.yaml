@@ -11,7 +11,7 @@ backend:
 frontend:
   image:
     repository: docksaif/scent-luxe-frontend
-    tag: "v1"
+    tag: "v2"
   service:
     port: 80
 
